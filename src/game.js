@@ -71,7 +71,9 @@ function onTap(e) {
   if (hit) {
     g.found.push(hit.i); S.stats.found++; SFX.found(); Monet.vibrate(20);
     if (g.hintT && g.hintT.i === hit.i) { g.hintT = null; document.querySelectorAll('.mk.hintring').forEach(x => x.remove()); }
-    drawPics(); drawStatus();
+    const marks = g.targets.filter(x => g.found.indexOf(x.i) >= 0);
+    ['a', 'b'].forEach(side => { const svg = document.querySelector('#p' + side + ' svg.pic'); if (svg) refreshMarks(svg, g.lvl, side, marks); });
+    drawStatus();
     if (g.found.length >= g.targets.length) setTimeout(win, 350);
   } else {
     g.misses++; S.stats.misses++; SFX.miss(); Monet.vibrate(40);

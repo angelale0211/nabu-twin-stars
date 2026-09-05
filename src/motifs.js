@@ -67,12 +67,12 @@ const GLYPH_NAMES = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'lib
 const MOTIFS = {
 
   /* ---------------------------------------------------------- sky ---- */
-  moon: { r: 30, sym: false, zone: 'sky', vars: 3, draw(c) {
+  moon: { r: 30, sym: false, zone: 'sky', vars: 3, glow: '#F6E5B3', draw(c) {
     if (c.v === 1) return ring(0, 0, 26, c.a) + `<circle cx="-8" cy="-6" r="5" fill="${c.b}" fill-opacity=".5" stroke="none"/><circle cx="8" cy="8" r="7" fill="${c.b}" fill-opacity=".5" stroke="none"/><circle cx="-4" cy="12" r="3" fill="${c.b}" fill-opacity=".5" stroke="none"/>`;
     if (c.v === 2) return `<path d="M0 -26 A26 26 0 0 0 0 26 Z" fill="${c.a}"/>` + `<path d="M0 -26 A26 26 0 0 1 0 26" fill="${c.b}" fill-opacity=".35"/>`;
     return `<path d="M6 -27 A27 27 0 1 0 6 27 A19 19 0 1 1 6 -27 Z" fill="${c.a}"/>` + sparkle(20, -6, 6);
   } },
-  sun: { r: 34, sym: true, zone: 'sky', vars: 2, draw(c) {
+  sun: { r: 34, sym: true, zone: 'sky', vars: 2, glow: '#FFF1C0', draw(c) {
     let rays = '';
     const n = c.v === 1 ? 8 : 12;
     for (let i = 0; i < n; i++) {
@@ -81,15 +81,15 @@ const MOTIFS = {
     }
     return rays + ring(0, 0, 24, c.a) + eyes(-8, 8, -2) + smile(0, 8) + blush(-14, 5) + blush(14, 5);
   } },
-  star: { r: 26, sym: true, zone: 'sky', vars: 3, draw(c) {
+  star: { r: 26, sym: true, zone: 'sky', vars: 3, glow: '#F6E5B3', draw(c) {
     if (c.v === 1) return `<polygon points="${starPts(0, 0, 28, 12, 6)}" fill="${c.a}" stroke-linejoin="round"/>`;
     if (c.v === 2) return `<polygon points="${starPts(0, 0, 28, 12, 4)}" fill="${c.a}" stroke-linejoin="round"/>`;
     return `<polygon points="${starPts(0, 0, 28, 13, 5)}" fill="${c.a}" stroke-linejoin="round"/>` + eyes(-7, 7, 0) + smile(0, 7);
   } },
-  sparkle: { r: 22, sym: true, zone: 'any', vars: 2, draw(c) {
+  sparkle: { r: 22, sym: true, zone: 'any', vars: 2, glow: '#FFF6D8', draw(c) {
     return sparkle(0, 0, 24, c.a) + (c.v === 1 ? sparkle(18, -16, 8, c.b) + sparkle(-16, 16, 6, c.b) : '');
   } },
-  planet: { r: 34, sym: false, zone: 'sky', vars: 3, draw(c) {
+  planet: { r: 34, sym: false, zone: 'sky', vars: 3, glow: '#D9CDF3', draw(c) {
     const body = ring(0, 0, 22, c.a);
     if (c.v === 1) return body + `<path d="M-21 -6 Q0 -14 21 -6 M-22 4 Q0 -2 22 4 M-18 12 Q0 8 18 12" fill="none" stroke-width="2"/>`;
     if (c.v === 2) return body + `<circle cx="-7" cy="-6" r="5" fill="${c.b}" stroke-width="1.6"/><circle cx="9" cy="6" r="6" fill="${c.b}" stroke-width="1.6"/><circle cx="-6" cy="11" r="3" fill="${c.b}" stroke-width="1.4"/>`;
@@ -98,7 +98,7 @@ const MOTIFS = {
          + `<path d="M-38 2 Q-40 14 0 16 Q40 14 38 2" fill="none" stroke="${c.b}" stroke-width="4"/>`
          + shine(-8, -9, 6, 3.5);
   } },
-  comet: { r: 30, sym: false, zone: 'sky', vars: 2, draw(c) {
+  comet: { r: 30, sym: false, zone: 'sky', vars: 2, glow: '#F6E5B3', draw(c) {
     return `<path d="M-2 0 L-44 -18 L-14 -4 L-42 6 Z" fill="${c.b}" stroke-width="1.8"/>`
          + (c.v === 1 ? `<path d="M-6 8 L-30 22 L-10 10 Z" fill="${c.b}" stroke-width="1.6"/>` : '')
          + ring(10, 0, 15, c.a) + sparkle(24, -14, 6);
@@ -115,7 +115,7 @@ const MOTIFS = {
          + `<path d="M-46 22 Q-52 10 -40 10 Q-38 0 -28 6 Q-20 8 -22 20 Z" fill="${c.a}"/>`
          + `<path d="M46 22 Q52 10 40 10 Q38 0 28 6 Q20 8 22 20 Z" fill="${c.a}"/>`;
   } },
-  constellation: { r: 32, sym: false, zone: 'sky', vars: 3, draw(c) {
+  constellation: { r: 32, sym: false, zone: 'sky', vars: 3, glow: '#F6E5B3', draw(c) {
     const sets = [[[-30, 14], [-8, -8], [14, -18], [30, 6]], [[-26, -14], [-6, 2], [12, -10], [26, 14], [0, 22]], [[-24, 18], [-18, -12], [8, -20], [22, 0], [12, 20]]];
     const s = sets[c.v] || sets[0];
     let d = 'M' + s.map(p => p.join(' ')).join(' L');
@@ -166,7 +166,7 @@ const MOTIFS = {
          + `<rect x="-4" y="13" width="8" height="16" fill="${c.a}"/>`
          + (c.v === 1 ? `<polygon points="${starPts(0, 34, 7, 3, 5)}" fill="${GOLD}" stroke-width="1.4"/>` : ring(0, 33, 5, GOLD, 2));
   } },
-  pentacle: { r: 28, sym: true, zone: 'any', vars: 2, draw(c) {
+  pentacle: { r: 28, sym: true, zone: 'any', vars: 2, glow: '#F6E5B3', draw(c) {
     const p = [];
     for (let i = 0; i < 5; i++) { const a = (-90 + i * 72) * Math.PI / 180; p.push([20 * Math.cos(a), 20 * Math.sin(a)]); }
     const o = [0, 2, 4, 1, 3];
@@ -176,24 +176,24 @@ const MOTIFS = {
   } },
 
   /* ------------------------------------------------- spiritual ---- */
-  crystal: { r: 32, sym: false, zone: 'ground', vars: 2, draw(c) {
+  crystal: { r: 32, sym: false, zone: 'ground', vars: 2, glow: '#D9CDF3', draw(c) {
     return `<path d="M-30 30 L-26 -4 L-16 -20 L-6 0 L-4 30 Z" fill="${c.b}"/>`
          + `<path d="M6 30 L10 -2 L18 -14 L28 4 L30 30 Z" fill="${c.b}"/>`
          + `<path d="M-14 30 L-12 -18 L0 -40 L12 -18 L14 30 Z" fill="${c.a}"/>`
          + `<path d="M-12 -18 L0 -40 L0 30" fill="none" stroke="${WHITE}" stroke-opacity=".5" stroke-width="2"/>`
          + `<rect x="-34" y="28" width="68" height="8" rx="4" fill="${SAND}"/>` + (c.v === 1 ? sparkle(20, -30, 8) : '');
   } },
-  gem: { r: 26, sym: true, zone: 'any', vars: 2, draw(c) {
+  gem: { r: 26, sym: true, zone: 'any', vars: 2, glow: '#FFFFFF', draw(c) {
     return (c.v === 1 ? `<polygon points="0,-30 22,-12 14,30 -14,30 -22,-12" fill="${c.a}"/><path d="M-22 -12 L22 -12 M0 -30 L-8 -12 L0 30 L8 -12 Z" fill="none" stroke-width="1.6"/>`
                       : `<polygon points="-26,-10 -14,-26 14,-26 26,-10 0,28" fill="${c.a}"/><path d="M-26 -10 L26 -10 M-14 -26 L-6 -10 L0 28 L6 -10 L14 -26" fill="none" stroke-width="1.6"/>`)
          + shine(-8, -18, 5, 2.5);
   } },
-  crystalball: { r: 32, sym: true, zone: 'ground', vars: 2, draw(c) {
+  crystalball: { r: 32, sym: true, zone: 'ground', vars: 2, glow: '#D9CDF3', draw(c) {
     return `<path d="M-24 34 L24 34 L18 20 L-18 20 Z" fill="${GOLD}"/>`
          + ring(0, -6, 27, c.a) + shine(-10, -18, 7, 4)
          + (c.v === 1 ? sparkle(4, -6, 10, c.b) + sparkle(-10, 4, 5, c.b) : `<path d="M-14 -2 Q-4 -18 12 -6" fill="none" stroke="${c.b}" stroke-width="3" stroke-linecap="round"/>`);
   } },
-  candle: { r: 30, sym: true, zone: 'ground', vars: 2, draw(c) {
+  candle: { r: 30, sym: true, zone: 'ground', vars: 2, glow: '#FFE9A0', draw(c) {
     return `<rect x="-12" y="-14" width="24" height="46" rx="4" fill="${c.a}"/>`
          + `<path d="M-12 -6 Q-6 2 -12 8 M12 -2 Q6 4 12 12" fill="none" stroke="${c.b}" stroke-width="3" stroke-linecap="round"/>`
          + `<ellipse cx="0" cy="-14" rx="12" ry="4" fill="${c.b}"/>`
@@ -269,7 +269,7 @@ const MOTIFS = {
          + `<path d="M-16 -8 L16 -8 M-16 0 L10 0 M-16 8 L14 8" fill="none" stroke="${c.b}" stroke-width="2.4" stroke-linecap="round"/>`
          + (c.v === 1 ? `<circle cx="18" cy="8" r="6" fill="${RED}" stroke-width="1.6"/>` : '');
   } },
-  potion: { r: 30, sym: true, zone: 'ground', vars: 2, draw(c) {
+  potion: { r: 30, sym: true, zone: 'ground', vars: 2, glow: '#D9CDF3', draw(c) {
     return `<rect x="-8" y="-40" width="16" height="10" rx="2" fill="${WOOD}"/>`
          + `<path d="M-8 -30 L8 -30 L8 -14 Q30 -4 30 16 Q30 34 0 34 Q-30 34 -30 16 Q-30 -4 -8 -14 Z" fill="${LILAC}" fill-opacity=".7"/>`
          + `<path d="M-28 12 Q-30 34 0 34 Q30 34 28 12 Q20 4 0 6 Q-20 4 -28 12 Z" fill="${c.a}" stroke="none"/>`
@@ -291,7 +291,7 @@ const MOTIFS = {
          + `<ellipse cx="0" cy="-16" rx="14" ry="5" fill="${c.b}"/><circle cx="0" cy="-22" r="4" fill="${c.b}" stroke-width="1.6"/>`
          + (c.v === 1 ? `<circle cx="-6" cy="8" r="6" fill="${c.b}" stroke-width="1.6"/><circle cx="10" cy="14" r="4" fill="${c.b}" stroke-width="1.4"/>` : `<path d="M-16 10 Q0 18 16 10" fill="none" stroke="${c.b}" stroke-width="3"/>`);
   } },
-  lantern: { r: 30, sym: true, zone: 'any', vars: 2, draw(c) {
+  lantern: { r: 30, sym: true, zone: 'any', vars: 2, glow: '#FFE9A0', draw(c) {
     return `<line x1="0" y1="-44" x2="0" y2="-34" stroke-width="2.4"/>`
          + `<rect x="-14" y="-36" width="28" height="8" rx="3" fill="${c.b}"/>`
          + `<path d="M-14 -28 Q-30 -28 -30 -2 Q-30 22 -14 22 L14 22 Q30 22 30 -2 Q30 -28 14 -28 Z" fill="${c.a}"/>`
@@ -299,7 +299,7 @@ const MOTIFS = {
          + `<rect x="-14" y="22" width="28" height="8" rx="3" fill="${c.b}"/>`
          + (c.v === 1 ? sparkle(0, -4, 8, GOLD2) : `<line x1="0" y1="30" x2="0" y2="42" stroke="${GOLD}" stroke-width="3"/>`);
   } },
-  ring: { r: 26, sym: true, zone: 'any', vars: 2, draw(c) {
+  ring: { r: 26, sym: true, zone: 'any', vars: 2, glow: '#FFF6D8', draw(c) {
     return `<circle cx="0" cy="8" r="20" fill="none" stroke="${INK}" stroke-width="9"/><circle cx="0" cy="8" r="20" fill="none" stroke="${GOLD}" stroke-width="5"/>`
          + (c.v === 1 ? `<circle cx="0" cy="-16" r="9" fill="${c.a}"/>` : `<polygon points="0,-30 12,-20 8,-6 -8,-6 -12,-20" fill="${c.a}"/>`) + shine(-3, -19, 3, 2);
   } },
@@ -349,7 +349,7 @@ const MOTIFS = {
          + leaf(-14, 20, -60) + leaf(-4, 12, 40) + leaf(8, 0, -60) + leaf(16, -10, 40)
          + (c.v === 1 ? `<circle cx="26" cy="-30" r="5" fill="${c.b}" stroke-width="1.6"/>` : '');
   } },
-  zodiac: { r: 28, sym: false, zone: 'any', vars: 12, draw(c) {
+  zodiac: { r: 28, sym: false, zone: 'any', vars: 12, glow: '#F6E5B3', draw(c) {
     return ring(0, 0, 27, c.a) + ring(0, 0, 22, c.a, 1.4)
          + `<path d="${GLYPHS[c.v % 12]}" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="scale(.95)"/>`;
   } },
@@ -397,7 +397,7 @@ const MOTIFS = {
     for (let i = 0; i < 14; i++) { const a = i * Math.PI * 2 / 14; s += ring((24 * Math.cos(a)).toFixed(1), (-6 + 22 * Math.sin(a)).toFixed(1), 5, i % 2 ? c.a : c.b, 1.6); }
     return s + `<path d="M0 16 L0 28" stroke-width="2"/><path d="M0 28 Q-6 40 0 44 Q6 40 0 28 Z" fill="${c.v === 1 ? GOLD : c.a}" stroke-width="1.6"/>`;
   } },
-  clockmoon: { r: 30, sym: true, zone: 'any', vars: 2, draw(c) {
+  clockmoon: { r: 30, sym: true, zone: 'any', vars: 2, glow: '#F6E5B3', draw(c) {
     return ring(0, 0, 28, c.b) + ring(0, 0, 22, CREAM, 1.6)
          + [0, 90, 180, 270].map(a => `<circle cx="0" cy="-17" r="2" fill="${INK}" stroke="none" transform="rotate(${a})"/>`).join('')
          + (c.v === 1 ? '' : `<path d="M0 0 L0 -12 M0 0 L9 5" stroke-width="2.6"/>`)
