@@ -1,0 +1,25 @@
+{
+  "title": { "vi": "Chính sách riêng tư", "en": "Privacy policy" },
+  "updated": "2026-09-05",
+  "intro": {
+    "vi": "Nabu Twin Stars là game tìm điểm khác nhau của Nabu Tarot. Game không cần tài khoản và không hỏi tên, email hay ngày sinh của bạn.",
+    "en": "Nabu Twin Stars is a spot-the-difference game by Nabu Tarot. It needs no account and never asks for your name, email or birthday."
+  },
+  "sections": [
+    { "h": { "vi": "Dữ liệu lưu trên máy", "en": "Data kept on your device" },
+      "p": { "vi": "Tiến trình chơi (sao, bụi sao, đá trăng, chuỗi điểm danh, cài đặt) được lưu ngay trên điện thoại của bạn. Chúng tôi không gửi dữ liệu này lên máy chủ. Xoá app hoặc bấm 'Xoá tiến trình' là dữ liệu mất.",
+             "en": "Your progress (stars, Stardust, Moonstones, check-in streak, settings) is stored on your phone only. We do not send it to a server. Uninstalling the app or tapping 'Reset progress' deletes it." } },
+    { "h": { "vi": "Quảng cáo", "en": "Advertising" },
+      "p": { "vi": "Bản Android hiển thị quảng cáo qua Google AdMob: quảng cáo nhận thưởng (bạn tự chọn xem) và quảng cáo ngắn giữa một số màn. Google có thể thu thập mã quảng cáo của thiết bị và dữ liệu sử dụng để hiển thị và đo lường quảng cáo, theo chính sách riêng tư của Google (policies.google.com/privacy). Ở khu vực châu Âu, app hỏi ý kiến bạn trước và bạn có thể đổi lựa chọn trong Tôi → Tuỳ chọn quảng cáo. Mua 'Bỏ quảng cáo' sẽ tắt quảng cáo giữa các màn.",
+             "en": "The Android version shows ads through Google AdMob: reward ads you choose to watch and short ads between some levels. Google may collect the device's advertising ID and usage data to serve and measure ads under Google's privacy policy (policies.google.com/privacy). In the European region the app asks for your consent first and you can change it under Me → Ad privacy options. Buying 'Remove ads' turns off the ads between levels." } },
+    { "h": { "vi": "Mua trong app", "en": "In-app purchases" },
+      "p": { "vi": "Mua hàng đi qua Google Play. Chúng tôi không thấy và không lưu thông tin thanh toán của bạn. Bạn có thể khôi phục các gói đã mua trong Cửa hàng → Khôi phục mua hàng.",
+             "en": "Purchases go through Google Play. We never see or store your payment details. You can restore purchases under Shop → Restore purchases." } },
+    { "h": { "vi": "Trẻ em", "en": "Children" },
+      "p": { "vi": "Game phù hợp mọi lứa tuổi, không có nội dung đáng sợ. Chúng tôi không cố ý thu thập dữ liệu cá nhân của trẻ em.",
+             "en": "The game suits all ages and contains nothing scary. We do not knowingly collect personal data from children." } },
+    { "h": { "vi": "Liên hệ", "en": "Contact" },
+      "p": { "vi": "Thắc mắc về riêng tư: nabutarot@outlook.com.",
+             "en": "Privacy questions: nabutarot@outlook.com." } }
+  ]
+}

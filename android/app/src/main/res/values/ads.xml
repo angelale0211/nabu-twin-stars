@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google's official TEST ids. They show test ads and earn nothing.
+     Before release: create the app in AdMob, make one Rewarded and one
+     Interstitial ad unit, and paste the three ids here. -->
+<resources>
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_rewarded" translatable="false">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="admob_interstitial" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+</resources>

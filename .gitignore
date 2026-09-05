@@ -1,0 +1,12 @@
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/*.iml
+tools/out/
+test/shots/
+_tmp_icon.png
+__pycache__/
+*.keystore
