@@ -1795,8 +1795,7 @@ function drawPics() {
     const wrap = document.getElementById('p' + side);
     wrap.querySelectorAll('svg.pic').forEach(x => x.remove());
     wrap.insertAdjacentHTML('beforeend', pictureSVG(g.lvl, side, marks, 'g'));
-    const svg = wrap.querySelector('svg.pic');
-    svg.addEventListener('pointerdown', onTap);
+    if (!wrap.dataset.bound) { wrap.dataset.bound = 1; wrap.addEventListener('pointerdown', onTap); }
   });
   if (g.hintT) showHintRing(g.hintT);
 }
@@ -1822,7 +1821,8 @@ function tickTimer() {
 function onTap(e) {
   const g = GAME; if (!g.on || g.paused || g.over) return;
   e.preventDefault();
-  const svg = e.currentTarget, pt = tapToPic(svg, g.lvl, e.clientX, e.clientY);
+  const wrap = e.currentTarget, svg = wrap.querySelector('svg.pic'); if (!svg) return;
+  const pt = tapToPic(svg, g.lvl, e.clientX, e.clientY);
   const hit = hitTarget(g.targets, g.found, pt);
   if (hit) {
     g.found.push(hit.i); S.stats.found++; SFX.found(); Monet.vibrate(20);
@@ -1831,7 +1831,7 @@ function onTap(e) {
     if (g.found.length >= g.targets.length) setTimeout(win, 350);
   } else {
     g.misses++; S.stats.misses++; SFX.miss(); Monet.vibrate(40);
-    const wrap = svg.parentNode, box = svg.getBoundingClientRect();
+    const box = svg.getBoundingClientRect();
     const mk = document.createElement('span'); mk.className = 'mk x'; mk.textContent = '✕';
     mk.style.left = ((e.clientX - box.left) / box.width * 100) + '%'; mk.style.top = ((e.clientY - box.top) / box.height * 100) + '%';
     wrap.appendChild(mk); setTimeout(() => mk.remove(), 600);
