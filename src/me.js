@@ -4,7 +4,7 @@ function renderMe() {
   const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone || !!window.NabuAndroid;
   return `<h1 style="margin-bottom:10px">${esc(t('meTitle'))}</h1>
     <div class="card"><h2>${esc(t('stats'))}</h2>
-      <div class="kv"><span>${esc(t('starsTotal', { n: '' }))}</span><b>${starsHTML(3)} ${totalStars()} / ${LEVELS.length * 3}</b></div>
+      <div class="kv"><span>${esc(t('starsLabel'))}</span><b>${starsHTML(3)} ${totalStars()} / ${LEVELS.length * 3}</b></div>
       <div class="kv"><span>${esc(t('statsPlayed'))}</span><b>${S.stats.played}</b></div>
       <div class="kv"><span>${esc(t('statsFound'))}</span><b>${S.stats.found}</b></div>
       <div class="kv"><span>${esc(t('streak'))}</span><b>${S.daily.checkin.streak}</b></div>
