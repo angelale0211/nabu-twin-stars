@@ -55,6 +55,17 @@ function pictureSVG(lvl, side, marks, prefix) {
        + `<g${flip}>${body}<g class="marks">${marksSVG(lvl, side, marks)}</g></g></svg>`;
 }
 
+/* Photo levels: picture = <img> plus an SVG overlay for rings. Picture B of a
+   mirror level is flipped with CSS; the overlay group flips the same way. */
+function pictureHTML(lvl, side, marks) {
+  if (!lvl.a) return pictureSVG(lvl, side, marks, 'g');
+  const flipImg = side === 'b' && lvl.mirror ? ' style="transform:scaleX(-1)"' : '';
+  const flip = side === 'b' && lvl.mirror ? ` transform="translate(${PIC_W} 0) scale(-1 1)"` : '';
+  return `<img class="ph" src="${side === 'a' ? lvl.a : lvl.b}" alt="" draggable="false"${flipImg}>`
+       + `<svg class="pic marks-svg" viewBox="0 0 ${PIC_W} ${PIC_H}" xmlns="http://www.w3.org/2000/svg" data-side="${side}"><g${flip}><g class="marks">${marksSVG(lvl, side, marks)}</g></g></svg>`;
+}
+function preloadLevel(lvl) { if (lvl && lvl.a) { [lvl.a, lvl.b].forEach(u => { const im = new Image(); im.src = u; }); } }
+
 /* Update only the found-rings of an already drawn picture. */
 function refreshMarks(svg, lvl, side, marks) {
   const g = svg.querySelector('g.marks');

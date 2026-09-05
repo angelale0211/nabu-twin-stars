@@ -6,20 +6,25 @@ Package id `app.nabutarot.twinstars`. Portrait, one hand, offline.
 ## 1. The idea
 
 Two pictures, one above the other. Something changed between them. Tap it.
-The pictures are drawn in the Nabu Tarot style (soft lavender, cream, deep
-purple outlines, gold sparkles) from a library of 53 motifs: moons, suns,
-stars, planets, comets, tarot cards, the four suit emblems (cups, wands,
-swords, pentacles), crystals, candles, incense, lotus, tea cups, potions,
-zodiac badges for all 12 signs, cats, owls, moon rabbits, butterflies.
-Nothing creepy: the Death card is called *Renewal*, the Devil is *The
-Tempter*, and every face is smiling with closed eyes and blush.
+The pictures are real photographs in the mood of Nabu's posters: candle
+flames on black, amethyst clusters, crescent moons, nebulae, cherry blossom,
+incense smoke, lanterns, auroras. Each chapter keeps its own palette (meadow
+gold, moon-pond blue, candle amber, crystal violet, deep-space purple...).
+The UI keeps the Nabu illustration style (lavender, cream, deep purple, gold).
+Nothing creepy: the Death card is called *Renewal*, the Devil is *The Tempter*.
+
+Changes made in picture B: **colour shift** (a patch takes a different hue),
+**mirrored patch**, **turned patch**, **enlarged patch**, **cloned detail**
+(something appears twice), **erased detail**, **added glow** (a soft light or
+star), **brightness**. Early chapters use big, obvious changes; late chapters
+use smaller patches, gentler hues and mixed kinds.
 
 ## 2. Rules
 
 | Stage type | How many | Rule |
 |---|---|---|
 | **Differences** (standard) | 77 | Tap what is different. Each change is one of: colour, detail (variant), missing, flipped, turned, size, moved, swapped for another object. |
-| **Similarities** (bonus) | 15 (level 5 of every chapter, level 10 of even chapters) | Almost everything changed. Tap only what stayed exactly the same. |
+| **Similarities** (bonus) | 15 (level 5 of every chapter, level 10 of even chapters) | Both photos carry a dozen glowing lights; all but a few moved or changed colour. Tap the lights that stayed exactly the same. |
 | **Mirror** (special) | 8 (level 8 of chapters 3–10) | Picture B is a mirror image; the differences are still there. |
 
 Wrong tap: −5 s on timed levels and one miss. Too many misses (8 untimed, 6
@@ -53,8 +58,9 @@ chapter: early chapters use missing/swapped/strong colour changes; late
 chapters use look-alike colours, small moves and 22° turns.
 
 The full table with every change per level is in [LEVELS.md](LEVELS.md).
-Levels are frozen data (`src/levels.js`); re-roll one by adding a seed to
-`LEVEL_SEEDS` in `gen.js` and running `python tools/bake.py`.
+Levels are frozen data (`img/`, `src/levels.js`); the photo for each level is
+chosen in `tools/picks.json`, and `python tools/photo_bake.py` re-bakes them
+(seeded, so a re-bake reproduces the same changes).
 
 Clearing a whole chapter opens the **chapter chest**: 200 ✦ + 10 🌙.
 A locked level can be skipped for 15 🌙.
@@ -121,6 +127,5 @@ theme auto/light/dark/pink, sound, stats, privacy, reset).
 
 ## 8. Art rules
 
-- 100 × 100 motif box, deep-purple outline 2.4, pastel fills from the Nabu swatch (pink, blue, lavender, gold, mint, peach, lilac, rose, sky, leaf, sand, cream).
-- Faces are closed-eye smiles with blush. No fangs, skulls, blood, or spooky darkness; night skies are lavender with sparkles.
-- Backgrounds carry the chapter mood; objects carry the puzzle. Objects never overlap.
+- Level photos: real, moody, object-led (no people), 720 × 600, one per level, licences CC0 / PD / CC BY / CC BY-SA with the photographer credited in the app.
+- UI motifs: 100 × 100 box, deep-purple outline, pastel fills from the Nabu swatch; closed-eye smiles with blush. No fangs, skulls, blood or spooky darkness.

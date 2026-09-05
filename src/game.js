@@ -3,7 +3,7 @@ const GAME = { on: false };
 
 function levelTitle(lvl) {
   if (lvl.daily) return t('challenge');
-  return t('level') + ' ' + lvl.ch + '-' + lvl.n + ' · ' + tt(SCENES[lvl.bg].name);
+  return t('level') + ' ' + lvl.ch + '-' + lvl.n + ' · ' + tt(SCENES[lvl.bg || CHAPTERS[lvl.ch - 1].bg].name);
 }
 function typeLabel(lvl) { return lvl.type === 'same' ? t('typeSame') : lvl.mirror ? t('typeMirror') : t('typeDiff'); }
 
@@ -37,11 +37,12 @@ function drawPics() {
   const g = GAME, marks = g.targets.filter(x => g.found.indexOf(x.i) >= 0);
   ['a', 'b'].forEach(side => {
     const wrap = document.getElementById('p' + side);
-    wrap.querySelectorAll('svg.pic').forEach(x => x.remove());
-    wrap.insertAdjacentHTML('beforeend', pictureSVG(g.lvl, side, marks, 'g'));
+    wrap.querySelectorAll('svg.pic, img.ph').forEach(x => x.remove());
+    wrap.insertAdjacentHTML('beforeend', pictureHTML(g.lvl, side, marks));
     if (!wrap.dataset.bound) { wrap.dataset.bound = 1; wrap.addEventListener('pointerdown', onTap); }
   });
   if (g.hintT) showHintRing(g.hintT);
+  if (!g.lvl.daily && g.lvl.id < LEVELS.length) preloadLevel(LEVELS[g.lvl.id]);
 }
 function drawStatus() {
   const g = GAME;

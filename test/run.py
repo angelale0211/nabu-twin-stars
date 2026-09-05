@@ -195,7 +195,7 @@ with sync_playwright() as p:
     check('daily challenge pays 2 moonstones', pg.evaluate('S.moon') == m0 + 2)
     pg.click('[data-act=gNext]'); pg.wait_for_timeout(200)
     check('challenge marked done', pg.evaluate('challengeDone()'))
-    check('daily level deterministic per date', pg.evaluate("JSON.stringify(dailyLevel('2026-09-05').objs) === JSON.stringify(dailyLevel('2026-09-05').objs) && JSON.stringify(dailyLevel('2026-09-05').objs) !== JSON.stringify(dailyLevel('2026-09-06').objs)"))
+    check('daily level deterministic per date', pg.evaluate("(() => { const k = l => JSON.stringify(l.a || l.objs); return k(dailyLevel('2026-09-05')) === k(dailyLevel('2026-09-05')) && k(dailyLevel('2026-09-05')) !== k(dailyLevel('2026-09-06')); })()"))
 
     # shop
     goto(pg, '#/shop'); shot(pg, 'shop')

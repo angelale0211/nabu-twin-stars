@@ -8,7 +8,7 @@ name: Android
 on:
   push:
     branches: [main]
-    paths: ['android/**', '.github/workflows/android.yml']
+    paths: ['android/**', 'img/**', '.github/workflows/android.yml']
   workflow_dispatch:
 
 jobs:
@@ -23,6 +23,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: '8.11.1' }
 
+      - name: Level photos into the app assets
+        run: mkdir -p android/app/src/main/assets/www && cp -r img android/app/src/main/assets/www/img
       - name: Debug APK
         working-directory: android
         run: gradle assembleDebug --no-daemon --stacktrace

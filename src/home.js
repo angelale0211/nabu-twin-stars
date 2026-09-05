@@ -1,5 +1,7 @@
 /* ============================ home ============================ */
-function sceneThumb(bg, cls) {
+function sceneThumb(bg, cls, lvl) {
+  const first = lvl || LEVELS.find(l => (l.bg || CHAPTERS[l.ch - 1].bg) === bg);
+  if (first && first.a) return `<img class="${cls || 'thumb'}" src="${first.a}" alt="">`;
   return `<svg class="${cls || 'thumb'}" viewBox="0 0 360 300" stroke="#3D2A6E" stroke-width="2.4" stroke-linejoin="round">${SCENES[bg].draw('t' + bg)}</svg>`;
 }
 function renderHome() {
@@ -13,7 +15,7 @@ function renderHome() {
         <div class="grow"><div class="eyebrow">${esc(t('hello'))}</div><h2>${esc(t('tagline'))}</h2>
         <p class="muted sm">${esc(t('progress', { a: cleared, b: LEVELS.length }))} · ${esc(t('starsTotal', { n: totalStars() }))}</p>
         <div class="bar"><i style="width:${Math.round(totalStars() / 3)}%"></i></div></div></div></div>
-    <div class="card tint"><div class="row between"><div><div class="eyebrow">${esc(t('nextUp'))}</div><h3>${esc(t('level'))} ${lvl.ch}-${lvl.n} · ${esc(tt(SCENES[lvl.bg].name))}</h3><span class="faint">${esc(t('chapter'))} ${ch.id} · ${esc(tt(ch.card))} · ${esc(typeLabel(lvl))}</span></div>${sceneThumb(lvl.bg)}</div>
+    <div class="card tint"><div class="row between"><div><div class="eyebrow">${esc(t('nextUp'))}</div><h3>${esc(t('level'))} ${lvl.ch}-${lvl.n} · ${esc(tt(SCENES[ch.bg].name))}</h3><span class="faint">${esc(t('chapter'))} ${ch.id} · ${esc(tt(ch.card))} · ${esc(typeLabel(lvl))}</span></div>${sceneThumb(ch.bg, 'thumb', lvl)}</div>
       <button class="btn primary big wide" style="margin-top:12px" data-act="playNext">${icon('play')}${esc(t('play'))}</button></div>
     ${card ? `<div class="card"><div class="row"><div class="tcard" style="width:52px;height:80px;margin:0"><div class="in"><div class="f">${cardFaceSVG(card)}</div></div></div><div class="grow"><div class="eyebrow">${esc(t('todaysCard'))}</div><b>${esc(tt({ en: card.en, vi: card.vi }))}</b><div class="sm muted">${esc(t('blessings.' + card.bless))}${S.blessing.used && card.bless === 'double' ? ' ✓' : ''}</div></div></div></div>` : ''}
     <div class="eyebrow" style="margin:4px 0 8px">${esc(t('dailyTitle'))}</div>

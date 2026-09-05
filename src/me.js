@@ -20,7 +20,8 @@ function renderMe() {
         ${Monet.backend === 'android' ? `<button class="btn" data-act="privacyOptions">${esc(t('privacyOptions'))}</button>` : ''}
         ${standalone ? '' : `<p class="faint" style="text-align:center;margin:4px 0 0">${esc(t('install'))}: Chrome ⋮ → Add to Home screen</p>`}
         <button class="btn ghost" data-act="resetAsk" style="color:var(--err)">${esc(t('reset'))}</button></div>
-      <p class="faint" style="text-align:center;margin-top:10px">${esc(t('version'))} ${CONFIG.version} · ${Monet.backend}</p></div>`;
+      <p class="faint" style="text-align:center;margin-top:10px">${esc(t('version'))} ${CONFIG.version} · ${Monet.backend}</p></div>
+    ${typeof CREDITS !== 'undefined' && CREDITS.length ? `<div class="card"><h3>${esc(t('photoCredits'))}</h3><p class="faint">${esc(t('photoCreditsSub'))}</p><details><summary class="sm muted">${CREDITS.length} · Pexels</summary><p class="sm" style="margin-top:8px;line-height:1.8">${CREDITS.map(c => `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.by)}</a>`).join(' · ')}</p></details></div>` : ''}`;
 }
 Object.assign(window.ACTIONS = window.ACTIONS || {}, {
   set(el) {

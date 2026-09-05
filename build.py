@@ -7,7 +7,7 @@ import io, os, re, json, html as htmlmod, shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, 'src')
-SCRIPTS = ['config.js', 'logo-data.js', 'strings.js', 'motifs.js', 'scenes.js', 'gen.js', 'levels.js', 'render.js',
+SCRIPTS = ['config.js', 'logo-data.js', 'strings.js', 'motifs.js', 'scenes.js', 'gen.js', 'levels.js', 'credits.js', 'render.js',
            'core.js', 'sfx.js', 'monet.js', 'game.js', 'home.js', 'map.js', 'daily.js', 'shop.js', 'me.js', 'main.js']
 
 
@@ -31,6 +31,9 @@ print('index.html: %d bytes' % len(page.encode('utf-8')))
 assets = os.path.join(HERE, 'android', 'app', 'src', 'main', 'assets', 'www')
 os.makedirs(assets, exist_ok=True)
 shutil.copy(os.path.join(HERE, 'index.html'), os.path.join(assets, 'index.html'))
+img_src = os.path.join(HERE, 'img')
+if os.path.isdir(img_src):
+    shutil.copytree(img_src, os.path.join(assets, 'img'), dirs_exist_ok=True)
 print('copied to', assets)
 
 # privacy.html for the store listing (built from privacy.json, VI + EN).

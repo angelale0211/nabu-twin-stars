@@ -10,3 +10,5 @@ test/shots/
 _tmp_icon.png
 __pycache__/
 *.keystore
+android/app/src/main/assets/www/img/
+tools/cache/

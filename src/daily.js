@@ -66,7 +66,7 @@ function renderDaily(params) {
     h += '</div>';
   } else {
     const done = challengeDone(), lvl = dailyLevel(todayStr());
-    h += `<div class="card"><div class="row between"><div class="grow"><h2>${esc(t('challenge'))}</h2><p class="muted sm">${esc(t('challengeSub'))}</p><span class="chip">${esc(typeLabel(lvl))} · ${lvl.find} · ${fmtTime(lvl.time)}</span></div>${sceneThumb(lvl.bg)}</div>
+    h += `<div class="card"><div class="row between"><div class="grow"><h2>${esc(t('challenge'))}</h2><p class="muted sm">${esc(t('challengeSub'))}</p><span class="chip">${esc(typeLabel(lvl))} · ${lvl.find} · ${fmtTime(lvl.time)}</span></div>${sceneThumb(CHAPTERS[lvl.ch - 1].bg, 'thumb', lvl)}</div>
       <div style="margin-top:12px">${done ? `<div class="row" style="justify-content:center">${starsHTML(S.daily.challenge.stars)} <span class="muted">${esc(t('challengeDone'))}</span></div>` : `<button class="btn primary big wide" data-act="playDaily">${icon('play')}${esc(t('challengePlay'))} · +80 ✦ +2 🌙</button>`}</div></div>`;
   }
   return h;

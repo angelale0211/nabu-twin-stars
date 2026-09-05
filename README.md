@@ -1,20 +1,29 @@
 # Nabu Twin Stars
 
 A cosy spot-the-difference game for Android (and the web) in the Nabu Tarot
-style: two drawn pictures, tap what changed. Tarot cards, moons, planets,
-crystals, tea cups and zodiac badges; nothing scary. Vietnamese and English.
+style: two real photographs, tap what changed. Candles, amethyst, moons,
+nebulae, blossoms, incense, lanterns and auroras; nothing scary. Vietnamese
+and English.
 
 - Play in the browser: https://angelale0211.github.io/nabu-twin-stars/
 - Design: [docs/GAME-DESIGN.md](docs/GAME-DESIGN.md) · all 100 levels: [docs/LEVELS.md](docs/LEVELS.md) · Play release steps: [docs/RELEASE.md](docs/RELEASE.md)
 
 ## How it is built
 
-Every picture is drawn at runtime from small vector motifs (`src/motifs.js`)
-placed on a chapter background (`src/scenes.js`). A level is data: the placed
-objects plus a list of changes for picture B. Because the geometry is known,
-taps are checked exactly and no image files ship at all. The 100 campaign
-levels are generated once by `src/gen.js` and frozen in `src/levels.js`; the
-daily challenge is generated from the date.
+Every level is a real photograph (CC0 / public domain / CC BY / CC BY-SA,
+found through Openverse and Wikimedia Commons, credited in Me -> Photo
+credits). `tools/photo_bake.py` makes picture B by editing the pixels: a
+colour shift, a mirrored or turned patch, a cloned or erased detail, an added
+glow. Bonus "similarities" levels add glowing lights to both pictures and
+change all but a few. The 100 campaign levels plus a 30-level daily pool are
+baked once into `img/` and `src/levels.js` (targets in 360 x 300 units), so
+taps are checked exactly. The older vector renderer (`motifs.js`,
+`scenes.js`, `gen.js`) still draws the UI art and the daily card.
+
+Photo pipeline: `python tools/photos.py search|fetch|sheet` (Openverse),
+`python tools/commons.py` (Wikimedia Commons quality images),
+`tools/picks.json` (the hand-picked photo per level), `python
+tools/photo_bake.py` (bake + contact sheets in tools/out/).
 
 ```
 src/            game source (assembled into index.html by build.py)
