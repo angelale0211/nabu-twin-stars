@@ -34,7 +34,7 @@ def solve_level(pg, wrong_first=False):
     n = pg.evaluate('GAME.targets.length')
     if wrong_first:
         # a corner that holds no target
-        box = pg.evaluate("(() => { const r = document.querySelector('#pa svg').getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; })()")
+        box = pg.evaluate("(() => { const e = document.querySelector('#pa img.ph') || document.querySelector('#pa svg'); const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; })()")
         pg.mouse.click(box[0] + 3, box[1] + box[3] - 3)
         pg.wait_for_timeout(60)
     for k in range(n):
@@ -44,7 +44,7 @@ def solve_level(pg, wrong_first=False):
         x, y = tg['x'], tg['y']
         if side == 'b' and tg.get('x2') is not None: x, y = tg['x2'], tg['y2']
         if side == 'b' and pg.evaluate('!!GAME.lvl.mirror'): x = 360 - x
-        box = pg.evaluate("(s => { const r = document.querySelector('#p' + s + ' svg').getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; })('%s')" % side)
+        box = pg.evaluate("(s => { const e = document.querySelector('#p' + s + ' img.ph') || document.querySelector('#p' + s + ' svg'); const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; })('%s')" % side)
         pg.mouse.click(box[0] + x / 360 * box[2], box[1] + y / 300 * box[3])
         pg.wait_for_timeout(40)
     pg.wait_for_timeout(500)
@@ -60,7 +60,7 @@ with sync_playwright() as p:
     pg.goto(URL); pg.wait_for_timeout(400)
     pg.evaluate('window.__fastAds = true')
     check('boots without JS errors', not errors, errors)
-    check('100 baked levels', pg.evaluate('LEVELS.length') == 100)
+    check('200 baked levels', pg.evaluate('LEVELS.length') == 200)
     check('home renders play button', pg.locator('[data-act=playNext]').count() == 1)
     shot(pg, 'home')
 
@@ -75,7 +75,7 @@ with sync_playwright() as p:
 
     # map
     goto(pg, '#/map'); shot(pg, 'map')
-    check('map shows 100 level buttons', pg.locator('.lvl').count() == 100)
+    check('map shows 200 level buttons', pg.locator('.lvl').count() == 200)
     check('only level 1 open at start', pg.locator('.lvl:not(.lock)').count() == 1)
     check('chapter 2 locked by stars', pg.evaluate('chapterOpen(2)') is False)
 
@@ -116,7 +116,7 @@ with sync_playwright() as p:
     pg.evaluate("S.hearts = 5; save()")
     bad = []
     t0 = time.time()
-    for lid in range(3, 101):
+    for lid in range(3, 201):
         pg.evaluate("(id) => { for (let i = 1; i < id; i++) if (!S.levels[i]) S.levels[i] = {stars: 3, best: 10}; save(); }", lid)
         goto(pg, '#/play?l=%d' % lid); pg.wait_for_timeout(120)
         if pg.locator('.tut').count(): pg.click('[data-act=gTutOk]')
@@ -125,14 +125,14 @@ with sync_playwright() as p:
         m = solve_level(pg)
         ok = pg.evaluate('GAME.over && GAME.found.length === GAME.targets.length')
         if not ok or m: bad.append((lid, 'unsolved' if not ok else 'misses %d' % m))
-        if lid in (15, 28, 50, 100): shot(pg, 'play-%d' % lid)
+        if lid in (15, 28, 90, 150, 200): shot(pg, 'play-%d' % lid)
         pg.click('[data-act=gChest]') if pg.locator('[data-act=gChest]').count() else None
         pg.wait_for_timeout(50)
         pg.evaluate("closeModal(); GAME.on = false; clearInterval(GAME.timer);")
-    check('all 100 levels solvable by tapping targets (%.0fs)' % (time.time() - t0), not bad, bad[:10])
+    check('all 200 levels solvable by tapping targets (%.0fs)' % (time.time() - t0), not bad, bad[:10])
     check('mirror level target mapping works', not [x for x in bad if x[0] % 10 == 8])
-    check('chapter chests collected', pg.evaluate('Object.keys(S.chests).length') >= 9, pg.evaluate('Object.keys(S.chests).length'))
-    check('300 stars possible', pg.evaluate('totalStars()') >= 100)
+    check('chapter chests collected', pg.evaluate('Object.keys(S.chests).length') >= 15, pg.evaluate('Object.keys(S.chests).length'))
+    check('600 stars possible', pg.evaluate('totalStars()') >= 200)
 
     # fail path: time runs out -> lose heart -> continue with moon
     goto(pg, '#/play?l=30'); pg.wait_for_timeout(150)

@@ -2,7 +2,7 @@
 /* ============================ settings ============================
    Things Nabu may change without touching the rest of the code. */
 const CONFIG = {
-  version: 2,
+  version: 3,
   appName: 'Nabu Twin Stars',
   /* Web-only ads (AdSense "Ad Placement API" for HTML5 games). Leave empty to
      keep the web version ad-free; the Android app uses AdMob through the bridge. */

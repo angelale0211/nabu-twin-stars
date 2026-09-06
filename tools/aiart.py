@@ -48,10 +48,11 @@ def _cache(path, make):
     return im
 
 # ---------------------------------------------------------------- sprites ---
-SPRITE_STYLE = ('one single object alone in the middle of the frame with empty space all around it, '
-                'the whole object inside the frame and not cropped, flat lay photographed from directly above, '
-                'plain flat light grey seamless studio background, even soft light, soft shadow, '
-                'sharp focus, fine detail, realistic, no text, no watermark, no border, no people, no hands')
+SPRITE_STYLE = ('one single object alone filling most of the frame, the whole object inside the frame and '
+                'not cropped, flat lay photographed from directly above, plain flat light grey seamless '
+                'studio background, even soft light, soft shadow, sharp focus, fine detail, realistic '
+                'product photo, no plate, no dish, no tray, no bowl under it, no ring or circular frame '
+                'around it, no text, no watermark, no border, no people, no hands')
 
 def _cutout(im):
     """rembg -> RGBA, trimmed to the object, edges cleaned."""
