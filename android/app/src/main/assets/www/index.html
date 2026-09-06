@@ -1499,8 +1499,10 @@ function bakeAll() {
 function dailyLevel(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   const dayIndex = Math.floor(d.getTime() / 86400000);
-  if (typeof DAILY_POOL !== 'undefined' && DAILY_POOL.length) {
-    const src = DAILY_POOL[((dayIndex % DAILY_POOL.length) + DAILY_POOL.length) % DAILY_POOL.length];
+  const pool = (typeof DAILY_POOL !== 'undefined' && DAILY_POOL.length) ? DAILY_POOL
+             : (LEVELS.length && LEVELS[0].a ? LEVELS : null);
+  if (pool) {
+    const src = pool[((dayIndex % pool.length) + pool.length) % pool.length];
     const copy = JSON.parse(JSON.stringify(src)); copy.id = 'daily'; copy.date = dateStr; copy.daily = 1; return copy;
   }
   const lvl = genLevel(planDaily(dayIndex), 0xD0 + dayIndex * 7);
@@ -1701,8 +1703,9 @@ function levelOpen(id) {
   return levelStars(id - 1) > 0;
 }
 function nextLevelId() { for (let i = 1; i <= LEVELS.length; i++) if (!levelStars(i) && levelOpen(i)) return i; return LEVELS.length; }
-function chapterStars(ch) { let n = 0; for (let i = 1; i <= 10; i++) n += levelStars((ch - 1) * 10 + i); return n; }
-function chapterCleared(ch) { for (let i = 1; i <= 10; i++) if (!levelStars((ch - 1) * 10 + i)) return false; return true; }
+function chapterLevels(ch) { return LEVELS.filter(l => l.ch === ch); }
+function chapterStars(ch) { return chapterLevels(ch).reduce((n, l) => n + levelStars(l.id), 0); }
+function chapterCleared(ch) { const ls = chapterLevels(ch); return ls.length > 0 && ls.every(l => levelStars(l.id)); }
 
 /* ---- today's blessing from the daily card ---- */
 function blessingKey() { return S.blessing.date === todayStr() ? S.blessing.key : ''; }
@@ -2148,7 +2151,7 @@ Object.assign(window.ACTIONS = window.ACTIONS || {}, {
 
 /* ============================ home ============================ */
 function sceneThumb(bg, cls, lvl) {
-  const first = lvl || LEVELS.find(l => (l.bg || CHAPTERS[l.ch - 1].bg) === bg);
+  const first = lvl || LEVELS.find(l => (l.bg || (CHAPTERS[l.ch - 1] || {}).bg) === bg) || LEVELS[0];
   if (first && first.a) return `<img class="${cls || 'thumb'}" src="${first.a}" alt="">`;
   return `<svg class="${cls || 'thumb'}" viewBox="0 0 360 300" stroke="#3D2A6E" stroke-width="2.4" stroke-linejoin="round">${SCENES[bg].draw('t' + bg)}</svg>`;
 }
@@ -2185,16 +2188,18 @@ function renderMap() {
   const nid = nextLevelId();
   let h = `<h1 style="margin-bottom:10px">${esc(t('mapTitle'))} <span class="chip gold">${icon('star')}${totalStars()}</span></h1>`;
   CHAPTERS.forEach(ch => {
+    const mine = chapterLevels(ch.id);
+    if (!mine.length) return;
     const open = chapterOpen(ch.id), st = chapterStars(ch.id);
     h += `<div class="card chap ${open ? '' : 'locked'}"><div class="head">${sceneThumb(ch.bg)}<div class="grow"><div class="eyebrow">${esc(t('chapter'))} ${ch.id} · ${esc(tt(ch.card))}</div><h3>${esc(tt(SCENES[ch.bg].name))}</h3>
-      <span class="faint">${open ? starsHTML(Math.min(3, Math.ceil(st / 10)), 3) + ' ' + st + '/30' : '🔒 ' + esc(t('needStars', { n: ch.need }))}</span></div>${S.chests[ch.id] ? '<span class="chip gold">' + icon('chest') + '</span>' : ''}</div>`;
+      <span class="faint">${open ? starsHTML(Math.min(3, Math.ceil(st / Math.max(1, mine.length))), 3) + ' ' + st + '/' + mine.length * 3 : '🔒 ' + esc(t('needStars', { n: ch.need }))}</span></div>${S.chests[ch.id] ? '<span class="chip gold">' + icon('chest') + '</span>' : ''}</div>`;
     h += '<div class="lvls">';
-    for (let n = 1; n <= 10; n++) {
-      const id = (ch.id - 1) * 10 + n, lvl = LEVELS[id - 1], st = levelStars(id), isOpen = levelOpen(id);
+    mine.forEach(lvl => {
+      const id = lvl.id, n = lvl.n, st = levelStars(id), isOpen = levelOpen(id);
       const cls = 'lvl' + (isOpen ? '' : ' lock') + (id === nid ? ' next' : '') + (lvl.type === 'same' ? ' same' : lvl.mirror ? ' mirror' : '');
       const tag = lvl.type === 'same' ? '<span class="tag">=</span>' : lvl.mirror ? '<span class="tag">⇄</span>' : '';
       h += `<button class="${cls}" data-act="openLevel" data-id="${id}">${tag}${n}${st ? starsHTML(st) : ''}</button>`;
-    }
+    });
     h += '</div></div>';
   });
   return h;

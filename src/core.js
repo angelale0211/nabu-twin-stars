@@ -91,8 +91,9 @@ function levelOpen(id) {
   return levelStars(id - 1) > 0;
 }
 function nextLevelId() { for (let i = 1; i <= LEVELS.length; i++) if (!levelStars(i) && levelOpen(i)) return i; return LEVELS.length; }
-function chapterStars(ch) { let n = 0; for (let i = 1; i <= 10; i++) n += levelStars((ch - 1) * 10 + i); return n; }
-function chapterCleared(ch) { for (let i = 1; i <= 10; i++) if (!levelStars((ch - 1) * 10 + i)) return false; return true; }
+function chapterLevels(ch) { return LEVELS.filter(l => l.ch === ch); }
+function chapterStars(ch) { return chapterLevels(ch).reduce((n, l) => n + levelStars(l.id), 0); }
+function chapterCleared(ch) { const ls = chapterLevels(ch); return ls.length > 0 && ls.every(l => levelStars(l.id)); }
 
 /* ---- today's blessing from the daily card ---- */
 function blessingKey() { return S.blessing.date === todayStr() ? S.blessing.key : ''; }

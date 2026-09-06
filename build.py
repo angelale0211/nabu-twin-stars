@@ -3,15 +3,19 @@
 Run:  python build.py
 Order matters: config and strings first, art before the generator, baked
 levels before the game code, screens before main.js."""
-import io, os, re, json, html as htmlmod, shutil
+import io, os, re, sys, json, html as htmlmod, shutil
+
+DEMO = len(sys.argv) > 1 and sys.argv[1] == 'demo'
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, 'src')
-SCRIPTS = ['config.js', 'logo-data.js', 'strings.js', 'motifs.js', 'scenes.js', 'gen.js', 'levels.js', 'credits.js', 'render.js',
+SCRIPTS = ['config.js', 'logo-data.js', 'strings.js', 'motifs.js', 'scenes.js', 'gen.js', ('levels-demo.js' if DEMO else 'levels.js'), 'credits.js', 'render.js',
            'core.js', 'sfx.js', 'monet.js', 'game.js', 'home.js', 'map.js', 'daily.js', 'shop.js', 'me.js', 'main.js']
 
 
 def read(name):
+    if DEMO and name == 'credits.js':
+        return 'const CREDITS = [];'   # demo art is generated, not photographed
     return io.open(os.path.join(SRC, name), encoding='utf-8').read()
 
 
@@ -24,8 +28,14 @@ assert '</script' not in js.lower(), 'a script source contains a closing script 
 page = shell.replace('<!-- __SCRIPTS__ -->', '<script>\n' + js + '\n</script>')
 ext = re.findall(r'<(?:script|link|img)[^>]+(?:src|href)="(https?:[^"]+)"', page)
 assert not ext, 'external resources: %s' % ext
-io.open(os.path.join(HERE, 'index.html'), 'w', encoding='utf-8', newline='\n').write(page)
-print('index.html: %d bytes' % len(page.encode('utf-8')))
+outdir = os.path.join(HERE, 'demo') if DEMO else HERE
+os.makedirs(outdir, exist_ok=True)
+io.open(os.path.join(outdir, 'index.html'), 'w', encoding='utf-8', newline='\n').write(page)
+print(('demo/' if DEMO else '') + 'index.html: %d bytes' % len(page.encode('utf-8')))
+if DEMO:
+    for f in ('manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-512-maskable.png', 'icon-180.png', 'sw.js'):
+        if os.path.exists(os.path.join(HERE, f)): shutil.copy(os.path.join(HERE, f), os.path.join(outdir, f))
+    raise SystemExit(0)
 
 # Android: the same page ships inside the APK so the game works offline.
 assets = os.path.join(HERE, 'android', 'app', 'src', 'main', 'assets', 'www')

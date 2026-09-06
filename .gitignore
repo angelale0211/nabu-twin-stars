@@ -12,3 +12,4 @@ __pycache__/
 *.keystore
 android/app/src/main/assets/www/img/
 tools/cache/
+tools/raw/

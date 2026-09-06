@@ -1,0 +1,18 @@
+{
+  "id": "nabu-twin-stars",
+  "name": "Nabu Twin Stars",
+  "short_name": "Twin Stars",
+  "description": "A cosy spot-the-difference game with tarot, moons and stars.",
+  "start_url": "./index.html#/home",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EFE9FA",
+  "theme_color": "#EFE9FA",
+  "categories": ["games", "puzzle"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

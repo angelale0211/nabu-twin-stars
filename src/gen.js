@@ -270,8 +270,10 @@ function bakeAll() {
 function dailyLevel(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   const dayIndex = Math.floor(d.getTime() / 86400000);
-  if (typeof DAILY_POOL !== 'undefined' && DAILY_POOL.length) {
-    const src = DAILY_POOL[((dayIndex % DAILY_POOL.length) + DAILY_POOL.length) % DAILY_POOL.length];
+  const pool = (typeof DAILY_POOL !== 'undefined' && DAILY_POOL.length) ? DAILY_POOL
+             : (LEVELS.length && LEVELS[0].a ? LEVELS : null);
+  if (pool) {
+    const src = pool[((dayIndex % pool.length) + pool.length) % pool.length];
     const copy = JSON.parse(JSON.stringify(src)); copy.id = 'daily'; copy.date = dateStr; copy.daily = 1; return copy;
   }
   const lvl = genLevel(planDaily(dayIndex), 0xD0 + dayIndex * 7);

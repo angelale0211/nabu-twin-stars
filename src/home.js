@@ -1,6 +1,6 @@
 /* ============================ home ============================ */
 function sceneThumb(bg, cls, lvl) {
-  const first = lvl || LEVELS.find(l => (l.bg || CHAPTERS[l.ch - 1].bg) === bg);
+  const first = lvl || LEVELS.find(l => (l.bg || (CHAPTERS[l.ch - 1] || {}).bg) === bg) || LEVELS[0];
   if (first && first.a) return `<img class="${cls || 'thumb'}" src="${first.a}" alt="">`;
   return `<svg class="${cls || 'thumb'}" viewBox="0 0 360 300" stroke="#3D2A6E" stroke-width="2.4" stroke-linejoin="round">${SCENES[bg].draw('t' + bg)}</svg>`;
 }
